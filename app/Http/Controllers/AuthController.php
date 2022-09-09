@@ -40,16 +40,22 @@ class AuthController extends Controller
         // dd($request);
         // validating the request input
         $this->validate($request,[
-            'email'=>'required|email',
+            'email'=>'required',
             'password'=>'required|min:4|max:6',
         ]);
 
+
+        $user = User::where('email', $request->email)
+        ->orWhere('name', $request->email)->first();
+        // dd($user);
+
+
         //making credientials array
         $credentials = [
-            'email' => $request->email,
+            'email' => $user->email,
             'password' => $request->password,
         ];
-
+        // dd($credentials);
         //authenticating the user credentials
         if(!Auth::attempt($credentials)) {
             return Redirect::back()
@@ -67,12 +73,18 @@ class AuthController extends Controller
     public function register(request $request){
         // dd($request);
         //validating the request input
-        $this->validate($request,[
+       $validate= $this->validate($request,[
             'name'=>'required',
             'email'=>'required|email',
+            'phone'=> 'required|max:11|min:11',
             'password'=>'required|min:6|max:10',
             'cpassword' => 'required|same:password|min:4|max:6',
+            'gender'=> 'required',
+            'terms' =>'required',
+
         ]);
+
+        
 
         //check for duplicate user email
         if (User::where('email', '=', $request->email)->exists()) {
@@ -83,7 +95,10 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => bcrypt($request->password),
+             'gender' =>$request->gender,
+             'terms' => $request->terms,
         ]);
 
         //random token for email verification
@@ -177,17 +192,5 @@ class AuthController extends Controller
         }
 
         return  Redirect::to('/login')->with('info', 'Your password has been changed!');
-    }
-
-
-
-    public function redirectToFacebook()
-    {
-
-    }
-
-    public function facebookSignin()
-    {
-
     }
  }

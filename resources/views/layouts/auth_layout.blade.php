@@ -26,20 +26,14 @@
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
+
     {{-- content begin --}}
     @yield('content')
 
     {{-- content end --}}
-    <!-- /.login-card-body -->
-  </div>
-</div>
-<!-- /.login-box -->
+
+
+
 
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
